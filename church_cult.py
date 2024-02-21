@@ -26,20 +26,12 @@ for i in range(0, LOOP_COUNT):
 butterfly_glow = cv2.cvtColor(butterfly_glow, cv2.COLOR_GRAY2RGBA)
 butterfly_glow[:, :, 3] = butterfly_glow[:, :, 1]
 butterfly_glow = cv2.multiply(butterfly_glow, (255, 255, 0, 1))
-# butterfly_glow[:, :, 3] = cv2.add(butterfly_glow[:, :, 1], butterfly[:, :, 3])
 
-overlay_transparent_to_transparent(
-    butterfly,
-    butterfly_glow,
-)
-overlay_transparent_to_transparent(
-    butterfly,
-    butterfly_glow,
-)
-overlay_transparent_to_transparent(
-    butterfly,
-    butterfly_glow,
-)
+for i in range(0, 3):
+    overlay_transparent_to_transparent(
+        butterfly,
+        butterfly_glow,
+    )
 
 print(f"background shape: {background.shape}")
 print(f"cat_standing shape: {cat_standing.shape}")
