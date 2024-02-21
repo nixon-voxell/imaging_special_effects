@@ -14,8 +14,6 @@ def extend_image(image: np.ndarray, height: int, width: int, color):
     half_width = int(width / 2)
 
     image_extended = np.ndarray((image.shape[0] + height,) + (image.shape[1] + width,) + image.shape[2:], dtype=image.dtype)
-    print(image_extended.shape)
-    print(image.shape[1:])
     image_extended[:, :] = color
     image_extended[
         half_height:image.shape[0] + half_height,
@@ -131,3 +129,11 @@ def overlay_transparent_to_transparent(background, foreground, x_offset=None, y_
 
     # overwrite the section of the background image that has been updated
     background[bg_y:bg_y + h, bg_x:bg_x + w] = composite
+
+def show_image(image):
+    # cv2.imshow("image", butterfly)
+    cv2.imshow("image", image)
+    # add wait key. window waits until user presses a key
+    cv2.waitKey(0)
+    # and finally destroy/close all open windows
+    cv2.destroyAllWindows()
