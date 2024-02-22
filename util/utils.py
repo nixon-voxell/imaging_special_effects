@@ -130,6 +130,28 @@ def overlay_transparent_to_transparent(background, foreground, x_offset=None, y_
     # overwrite the section of the background image that has been updated
     background[bg_y:bg_y + h, bg_x:bg_x + w] = composite
 
+def glow_image(image, loop: int, extend: int, color_multiplier):
+    image = extend_image(image, extend, extend, 0)
+
+    inv_loop = 1.0 / loop
+    image_alpha = image[:, :, 3]
+    image_glow = cv2.Canny(image_alpha, 50, 150)
+
+    for i in range(0, loop):
+        image_glow = cv2.GaussianBlur(image_glow, (5, 5), 10) + cv2.multiply(image_glow, inv_loop)
+
+    image_glow = cv2.cvtColor(image_glow, cv2.COLOR_GRAY2RGBA)
+    image_glow[:, :, 3] = image_glow[:, :, 1]
+    image_glow = cv2.multiply(image_glow, color_multiplier)
+
+    for i in range(0, 3):
+        overlay_transparent_to_transparent(
+            image,
+            image_glow,
+        )
+
+    return image
+
 def show_image(image):
     # cv2.imshow("image", butterfly)
     cv2.imshow("image", image)

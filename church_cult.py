@@ -19,26 +19,8 @@ for i in range(0, LOOP_COUNT):
     background = cv2.GaussianBlur(background, (3, 3), 2)
 
 # Glow butterfly
-butterfly = extend_image(butterfly, 100, 100, 0)
 butterfly = resize_percentage(butterfly, 0.6)
-
-LOOP_COUNT = 15
-INV_LOOP_COUNT = 1.0 / LOOP_COUNT
-butterfly_alpha = butterfly[:, :, 3]
-butterfly_glow = cv2.Canny(butterfly_alpha, 50, 150)
-
-for i in range(0, LOOP_COUNT):
-    butterfly_glow = cv2.GaussianBlur(butterfly_glow, (5, 5), 10) + cv2.multiply(butterfly_glow, INV_LOOP_COUNT)
-
-butterfly_glow = cv2.cvtColor(butterfly_glow, cv2.COLOR_GRAY2RGBA)
-butterfly_glow[:, :, 3] = butterfly_glow[:, :, 1]
-butterfly_glow = cv2.multiply(butterfly_glow, (1.0, 2.1, 3.4, 1))
-
-for i in range(0, 3):
-    overlay_transparent_to_transparent(
-        butterfly,
-        butterfly_glow,
-    )
+butterfly = glow_image(butterfly, 15, 100, (1, 2.1, 3.4, 1))
 
 # Reduce scratch_overlay2 alpha
 scratch_overlay[:, :, 3] = scratch_overlay[:, :, 3] * 0.4
